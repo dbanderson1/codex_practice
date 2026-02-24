@@ -201,6 +201,7 @@ assign_gs_category <- function(sex, age, gs) {
 Data$GS_cat <- mapply(assign_gs_category, Data$Sex, Data$Age, Data$GripSum)
 
 #### Bench Press Categories ####
+# YMCA Bench Press
 
 bp_labels <- c("Very Poor", "Poor", "Below Average", "Average", "Above Average", "Good", "Excellent")
 bp_breaks <- list(
@@ -264,6 +265,7 @@ Data$Plank_cat <- vapply(
 )
 
 # Sit and Reach -----------------------------------------------------------
+# YMCA cut off values
 
 sr_labels <- c("Very Poor", "Poor", "Fair", "Good", "Excellent", "Superior")
 sr_breaks <- list(

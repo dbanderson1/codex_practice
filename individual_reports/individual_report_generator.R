@@ -10,7 +10,7 @@
 library(psych)
 
 #Load data
-Data <- read.csv("PFT.csv", row.names=1)
+Data <- read.csv("data/pft.csv", row.names=1)
 Data <- na.omit(Data)
 
 
@@ -47,19 +47,23 @@ assign_bf_category <- function(sex, age, body_fat_perc) {
     return(NA)
   }
 
-  # Thresholds are organized as:
-  # c(very_poor_min, poor_min, fair_min, good_min, excellent_min)
+  # Thresholds follow ACSM body-fat standards and are organized as:
+  # c(essential_min, essential_max, excellent_min, good_min,
+  #   average_min, below_average_min, poor_min)
   male_thresholds <- list(
-    `20-29` = c(24.9, 19.7, 15.8, 11.5, 7.9),
-    `30-39` = c(26.4, 22.4, 19.2, 15.9, 12.4),
-    `40-49` = c(27.8, 24.2, 21.4, 18.5, 15.0),
-    `50-59` = c(29.2, 25.6, 23.0, 20.2, 17.0),
-    `60-69` = c(36.8, 29.8, 23.6, 21.0, 18.1)
+    `20-29` = c(2, 5, 7.1, 9.4, 14.1, 17.4, 22.4),
+    `30-39` = c(2, 5, 11.3, 13.9, 17.5, 20.5, 24.2),
+    `40-49` = c(2, 5, 13.6, 16.3, 19.6, 22.5, 26.1),
+    `50-59` = c(2, 5, 15.3, 17.9, 21.3, 24.1, 27.5),
+    `60+` = c(2, 5, 15.3, 18.4, 22.0, 25.0, 28.5)
   )
 
   female_thresholds <- list(
-    `20-29` = c(30.5, 24.2, 20.6, 16.8, 15.1),
-    `30-39` = c(31.5, 25.8, 22.0, 17.5, 15.5)
+    `20-29` = c(10, 13, 14.5, 17.1, 20.6, 23.7, 27.7),
+    `30-39` = c(10, 13, 15.5, 18.0, 21.6, 24.9, 29.3),
+    `40-49` = c(10, 13, 18.5, 21.3, 24.9, 28.1, 32.1),
+    `50-59` = c(10, 13, 21.6, 25.0, 28.5, 31.6, 35.6),
+    `60+` = c(10, 13, 21.1, 25.1, 29.3, 32.5, 36.6)
   )
 
   age_band <- NA
@@ -71,8 +75,8 @@ assign_bf_category <- function(sex, age, body_fat_perc) {
     age_band <- "40-49"
   } else if (age >= 50 & age <= 59) {
     age_band <- "50-59"
-  } else if (age >= 60 & age <= 69) {
-    age_band <- "60-69"
+  } else if (age >= 60) {
+    age_band <- "60+"
   }
 
   if (is.na(age_band)) {
@@ -88,19 +92,19 @@ assign_bf_category <- function(sex, age, body_fat_perc) {
     return(NA)
   }
 
-  if (body_fat_perc > thresholds[1]) {
-    return("Very Poor")
-  } else if (body_fat_perc >= thresholds[2]) {
+  if (body_fat_perc > thresholds[7]) {
     return("Poor")
-  } else if (body_fat_perc >= thresholds[3]) {
-    return("Fair")
+  } else if (body_fat_perc >= thresholds[6]) {
+    return("Below Average")
+  } else if (body_fat_perc >= thresholds[5]) {
+    return("Average")
   } else if (body_fat_perc >= thresholds[4]) {
     return("Good")
-  } else if (body_fat_perc >= thresholds[5]) {
+  } else if (body_fat_perc >= thresholds[3]) {
     return("Excellent")
   }
 
-  return("Very Lean")
+  return("Essential Fat")
 }
 
 for (n in 1:nrow(Data)) {

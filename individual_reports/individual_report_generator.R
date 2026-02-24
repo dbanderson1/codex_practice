@@ -63,6 +63,7 @@ get_thresholds <- function(sex, age, male_thresholds, female_thresholds, breaks)
 # Create Labels for Categories -------------------------------------------
 
 #### BMI Categories ####
+# These are standardized BMI cut-off categories #
 
 bmi_upper_bounds <- c(18.5, 24.9, 29.9, 34.9, 39.9, Inf)
 bmi_labels <- c(
@@ -83,6 +84,8 @@ Data$BMI_cat <- vapply(
 )
 
 #### Body Fat % Categories ####
+# These are the ACSM Body Fat % chart, ACSM Health Related Physical Fitness Assessment Manual, 2 edition, 2008
+# https://www.scribd.com/document/331711396/ACSM-Body-Composition
 
 bf_labels <- c("Essential Fat", "Excellent", "Good", "Average", "Below Average", "Poor")
 bf_breaks <- list(
@@ -118,6 +121,7 @@ assign_bf_category <- function(sex, age, body_fat_perc) {
 Data$BFperc_cat <- mapply(assign_bf_category, Data$Sex, Data$Age, Data$BodyFatPer)
 
 #### VO2MAX Scales ####
+
 
 vo2_labels <- c("Very Poor", "Poor", "Fair", "Good", "Excellent", "Superior")
 vo2_breaks <- list(
